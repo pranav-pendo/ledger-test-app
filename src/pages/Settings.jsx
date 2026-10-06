@@ -1,13 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Settings() {
   const [workspace, setWorkspace] = useState("Tidewater Inc");
   const [timezone, setTimezone] = useState("America/New_York");
   const [saved, setSaved] = useState(false);
+  // Values as of the last save (initially what the form loaded with), so a save can report what
+  // it changed. Resets on remount along with the form state, since nothing is persisted.
+  const lastSaved = useRef({ workspace, timezone });
 
   function handleSubmit(event) {
     event.preventDefault();
     setSaved(true);
+
+    // Workspace-wide settings saved. Sends the timezone and which fields changed rather than the
+    // free-text workspace name; saving again without edits reports both flags as false.
+    window.pendo?.track?.("workspace_settings_saved", {
+      timezone,
+      previousTimezone: lastSaved.current.timezone,
+      timezoneChanged: timezone !== lastSaved.current.timezone,
+      workspaceNameChanged: workspace !== lastSaved.current.workspace,
+    });
+    lastSaved.current = { workspace, timezone };
   }
 
   return (

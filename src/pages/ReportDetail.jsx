@@ -1,9 +1,22 @@
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { reports } from "../data.js";
+
+// reportIds already reported as not found. Module-level rather than a ref so it survives
+// remounts: the event fires once per reportId per session, not on every visit or re-render.
+const reportedMissingIds = new Set();
 
 export default function ReportDetail() {
   const { reportId } = useParams();
   const report = reports.find((r) => r.id === reportId);
+
+  // Broken or stale report link (e.g. a deleted report shared by URL). Must stay above the early
+  // return below, since hooks can't run conditionally.
+  useEffect(() => {
+    if (report || reportedMissingIds.has(reportId)) return;
+    reportedMissingIds.add(reportId);
+    window.pendo?.track?.("report_not_found", { reportId });
+  }, [report, reportId]);
 
   if (!report) {
     return (

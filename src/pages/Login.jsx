@@ -5,6 +5,17 @@ export default function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    // Completed sign-in: onSubmit only runs once the browser's required/type="email" validation
+    // has passed. There's no auth backend yet; when one is added, move this into its success
+    // callback. Only the email's domain is sent, never the address itself or the password.
+    const email = event.currentTarget.elements.email.value;
+    const emailDomain = email.includes("@") ? email.split("@").pop().toLowerCase() : "";
+    window.pendo?.track?.("user_signed_in", {
+      authMethod: "password",
+      emailDomain,
+    });
+
     navigate("/dashboard");
   }
 
