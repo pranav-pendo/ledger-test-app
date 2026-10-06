@@ -4,7 +4,7 @@ import { metrics, reports } from "../data.js";
 export default function Dashboard() {
   return (
     <>
-      <h1>Dashboard</h1>
+      <h1>Overview</h1>
       <p className="subtitle">A snapshot of product usage across your workspace.</p>
 
       <div className="metrics">

@@ -5,7 +5,7 @@ const links = [
   { to: "/customers", label: "Customers" },
   { to: "/reports", label: "Reports" },
   { to: "/settings", label: "Settings" },
-  { to: "/dashboard", label: "Dashboard" },
+  { to: "/dashboard", label: "Overview" },
 ];
 
 export default function Layout() {

@@ -32,7 +32,7 @@ export default function NotFound() {
     <>
       <h1>Page not found</h1>
       <p className="subtitle">That page doesn’t exist, or it moved.</p>
-      <Link to="/dashboard">Go to dashboard</Link>
+      <Link to="/dashboard">Go to overview</Link>
     </>
   );
 }
